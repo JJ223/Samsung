@@ -29,3 +29,6 @@ The project encompasses the following key objectives:
 Utilize historical budget data, production records, cost information, and market data to inform pricing and delivery time models.
 There will be two datasets, a budget (product description,quantity, price, customer) and production dataset (detailed product description, quantity)
 
+# Data Formating
+Os nomes do tipo de produtos mais vendidos seguem o formato Y.XXX.XX.XX ou Y.XXX.XX.XX.XX.XX, onde Y é uma categoria (normalmente o tipo de manta filtrante, e X dimensões do produto. L x H x G(gutter) ou L x H x D (depth) x G x P (number of pockets)
+
