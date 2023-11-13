@@ -1,0 +1,20 @@
+dimensions	qtd	punit
+UTAN 1 Filtro bolsa EP 50 1/2 592x300x25 mm 330 mm 2	2	12.5	=C15*D15
+UTAN 1 Pré-filtros metálico G2 592x592x48 mm 4	4	9.25	=C16*D16
+UTAN 1 Pré-filtros metálico G2 592x300x48 mm 2	2	6.5	=C17*D17
+UTAN 2 Filtro bolsa EP 50 1/1 592x592x25 mm 330 mm 2	2	15.5	=C18*D18
+UTAN 2 Filtro bolsa EP 50 1/2 592x287x25 mm 330 mm 2	2	12.5	=C19*D19
+UTAN 2 Filtro bolsa 320x287x25 mm 330 mm 1	1	12.95	=C20*D20
+UTAN 2 Filtro bolsa 320x287x25 mm 330 mm 1	1	12.95	=C21*D21
+UTAN 2 Pré-filtros metálico G2 592x592x48 mm 2	2	9.5	=C22*D22
+UTAN 2 Pré-filtros metálico G2 592x287x48 mm 2	2	6.5	=C23*D23
+UTAN 2 Pré-filtros metálico G2 880x287x48 mm 1	1	11.5	=C24*D24
+UTAN COZINHA Filtro bolsa EP 50 1/1 592x592x25 mm 330 mm 2	2	15.5	=C25*D25
+UTAN COZINHA Filtro bolsa EP 50 1/2 592x287x25 mm 330 mm 2	2	12.5	=C26*D26
+UTAN COZINHA Pré-filtros metálico G4 592x592x48 mm 2	2	9.5	=C27*D27
+UTAN COZINHA Pré-filtros metálico G4 592x287x48 mm 2	2	6.5	=C28*D28
+UTV 1 Filtro bolsa EP 50 1/1 592x592x25 mm 330 mm 2	2	15.5	=C29*D29
+UTV 1 Pré-filtros metálico G4 592x592x48 mm 2	2	9.5	=C30*D30
+UTAN 3 Pré-filtros metálico G4 592x592x48 mm 2	2	9.5	=C31*D31
+UTAN 3 Pré-filtros 592.287.48	2	6.5	=C32*D32
+=SUM(C5:C32)	=SUM(E5:E32)
