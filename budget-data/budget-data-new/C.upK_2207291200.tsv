@@ -1,3 +1,3 @@
 dimensions	qtd	punit
-M5 490x490x46 2unidades	2	11.5	=D15*E15
-F7 490x490x45 4unidades	4	36.5	=D16*E16
+M5.490.490.46	2	11.5
+F7.490.490.45	4	36.5
