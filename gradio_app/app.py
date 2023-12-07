@@ -6,7 +6,7 @@ import pickle as pkl
 from sklearn.metrics import pairwise_distances
 
 
-df = pd.read_csv('data/filter-data-cleaned.csv')
+df = pd.read_csv(os.path.join('data', 'filter-data-cleaned.csv'))
 
 features = ('qty', 'G4', 'M5', 'G3', 'F7', 'G2',
        'F9', 'M6', 'H14', 'F8', 'H13', 'Length', 'Height', 'Gutter')
