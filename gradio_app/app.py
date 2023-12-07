@@ -2,8 +2,20 @@ import gradio as gr
 import os
 import pandas as pd
 import pickle as pkl
+import json
 
 from sklearn.metrics import pairwise_distances
+
+import torch
+import torch.nn as nn
+
+
+manifest = json.load(open('models/gradio_manifest.json', 'r'))
+
+best_model_f7 = manifest['best_model_f7']
+best_model_m5 = manifest['best_model_m5']
+best_model_g4 = manifest['best_model_g4']
+best_model_general = manifest['best_model_general']
 
 
 df = pd.read_csv(os.path.join('data', 'filter-data-cleaned.csv'))
@@ -15,11 +27,44 @@ filter_features = ('G4', 'M5', 'G3', 'F7', 'G2', 'F9', 'M6', 'H14', 'F8', 'H13')
 
 available_filters = ('M5', 'M6', 'F7', 'F8', 'F9', 'G2', 'G3', 'G4', 'H13', 'H14')
 
+
+def create_nn_model():
+    return nn.Sequential(
+        nn.Linear(14, 128),
+        nn.ReLU(),
+        nn.Linear(128, 256),
+        nn.ReLU(),
+        nn.Linear(256, 256),
+        nn.ReLU(),
+        nn.Linear(256, 256),
+        nn.ReLU(),
+        nn.Linear(256, 1)
+    )
+
 try:
-    model_f7 = pkl.load(open(os.path.join('models', 'best_model_f7.pkl'), 'rb'))
-    model_m5 = pkl.load(open(os.path.join('models', 'best_model_m5.pkl'), 'rb'))
-    model_g4 = pkl.load(open(os.path.join('models', 'best_model_g4.pkl'), 'rb'))
-    model_general = pkl.load(open(os.path.join('models', 'best_model_general.pkl'), 'rb'))
+    if best_model_f7 == 'NeuralNetwork':
+        model_f7 = create_nn_model()
+        model_f7.load_state_dict(torch.load(os.path.join('models', 'best_model_f7.pt')))
+    else:
+        model_f7 = pkl.load(open(os.path.join('models', 'best_model_f7.pkl'), 'rb'))
+
+    if best_model_m5 == 'NeuralNetwork':
+        model_m5 = create_nn_model()
+        model_m5.load_state_dict(torch.load(os.path.join('models', 'best_model_m5.pt')))
+    else:
+        model_m5 = pkl.load(open(os.path.join('models', 'best_model_m5.pkl'), 'rb'))
+
+    if best_model_g4 == 'NeuralNetwork':
+        model_g4 = create_nn_model()
+        model_g4.load_state_dict(torch.load(os.path.join('models', 'best_model_g4.pt')))
+    else:
+        model_g4 = pkl.load(open(os.path.join('models', 'best_model_g4.pkl'), 'rb'))
+
+    if best_model_general == 'NeuralNetwork':
+        model_general = create_nn_model()
+        model_general.load_state_dict(torch.load(os.path.join('models', 'best_model_general.pt')))
+    else:
+        model_general = pkl.load(open(os.path.join('models', 'best_model_general.pkl'), 'rb'))
 
 except FileNotFoundError:
     print('Please make sure there are models in the models folder. You can train these with the Models_new.ipynb notebook.')
@@ -98,16 +143,29 @@ with gr.Blocks() as demo:
 
     def make_prediction(filter_efficiency, dim_length, dim_height, dim_gutter, quantity):
         if filter_efficiency == 'F7':
-            price = model_f7.predict([[quantity, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
+            if manifest['best_model_f7'] == 'NeuralNetwork':
+                price = model_f7(torch.tensor([[quantity, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]]).float()).item()
+            else:
+                price = model_f7.predict([[quantity, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
         elif filter_efficiency == 'M5':
-            price = model_m5.predict([[quantity, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
+            if manifest['best_model_m5'] == 'NeuralNetwork':
+                price = model_m5(torch.tensor([[quantity, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]]).float()).item()
+            else:
+                price = model_m5.predict([[quantity, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
         elif filter_efficiency == 'G4':
-            price = model_g4.predict([[quantity, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
+            if manifest['best_model_g4'] == 'NeuralNetwork':
+                price = model_g4(torch.tensor([[quantity, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]]).float()).item()
+            else:
+                price = model_g4.predict([[quantity, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
         else:
             idx = filter_features.index(filter_efficiency)
             one_hot = [0] * len(available_filters)
             one_hot[idx] = 1
-            price = model_general.predict([[quantity, *one_hot, dim_length, dim_height, dim_gutter]])[0]
+
+            if manifest['best_model_general'] == 'NeuralNetwork':
+                price = model_general(torch.tensor([[quantity, *one_hot, dim_length, dim_height, dim_gutter]]).float()).item()
+            else:
+                price = model_general.predict([[quantity, *one_hot, dim_length, dim_height, dim_gutter]])[0]
 
         return {
             feedback_row: gr.Row(visible=True),
