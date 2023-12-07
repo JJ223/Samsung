@@ -83,7 +83,7 @@ with gr.Blocks() as demo:
                     submit_correct_price_btn = gr.Button("Submit", variant="primary")
 
     with gr.Column():
-        gr.Markdown("## Similar products")
+        gr.Markdown("## Closest products")
         similar_products = gr.Dataframe(interactive=False)
 
     def show_feedback_row():
