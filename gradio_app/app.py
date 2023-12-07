@@ -11,6 +11,8 @@ df = pd.read_csv('data/filter-data-cleaned.csv')
 features = ('qty', 'G4', 'M5', 'G3', 'F7', 'G2',
        'F9', 'M6', 'H14', 'F8', 'H13', 'Length', 'Height', 'Gutter')
 
+filter_features = ('G4', 'M5', 'G3', 'F7', 'G2', 'F9', 'M6', 'H14', 'F8', 'H13')
+
 available_filters = ('M5', 'M6', 'F7', 'F8', 'F9', 'G2', 'G3', 'G4', 'H13', 'H14')
 
 try:
@@ -102,7 +104,7 @@ with gr.Blocks() as demo:
         elif filter_efficiency == 'G4':
             price = model_g4.predict([[quantity, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, dim_length, dim_height, dim_gutter]])[0]
         else:
-            idx = available_filters.index(filter_efficiency)
+            idx = filter_features.index(filter_efficiency)
             one_hot = [0] * len(available_filters)
             one_hot[idx] = 1
             price = model_general.predict([[quantity, *one_hot, dim_length, dim_height, dim_gutter]])[0]
