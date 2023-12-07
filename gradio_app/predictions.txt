@@ -1,0 +1,2 @@
+Filter Efficiency,Length,Height,Gutter,Quantity,Predicted Price,Correct Price
+F7,500.0,500.0,50.0,3.0,35.40,30.00
