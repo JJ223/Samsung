@@ -167,6 +167,9 @@ with gr.Blocks() as demo:
             else:
                 price = model_general.predict([[quantity, *one_hot, dim_length, dim_height, dim_gutter]])[0]
 
+
+        price = 0 if price < 0 else price
+
         return {
             feedback_row: gr.Row(visible=True),
             feedback_label: gr.Label(f'Predicted price: {price:.2f}€'),
